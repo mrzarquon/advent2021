@@ -8,19 +8,22 @@ data = data_file.read_text()
 
 data = data.split("\n")
 
-data = [(str(d.split()[0]), int(d.split()[1])) for d in data]
+end = len(data[0])
+total = len(data)
 
-# [0] = x, [1] = z
-pos = list((0, 0))
+gamma = [0 for x in range(0, end)]
+epsilon = [0 for x in range(0, end)]
 
-for coor in data:
-    direction = coor[0]
-    amount = coor[1]
-    if direction == "forward":
-        pos[0] = pos[0] + amount
-    elif direction == "down":
-        pos[1] = pos[1] + amount
-    else:
-        pos[1] = pos[1] - amount
 
-print(pos[0] * pos[1])
+for x in range(0, end):
+    z = 0
+    for d in data:
+        z += int(d[x])
+    remainder = total - z
+    gamma[x] = int(z > remainder)
+    epsilon[x] = int(z < remainder)
+
+gamma = "".join([str(g) for g in gamma])
+epsilon = "".join([str(g) for g in epsilon])
+
+print(int(f"0b{gamma}", 2) * int(f"0b{epsilon}", 2))
